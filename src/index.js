@@ -1,18 +1,16 @@
-import "./style.sass";
-
-import ReactDOM from "react-dom";
 import React from "react";
+import ReactDOM from "react-dom";
 
 import { Provider } from "react-redux";
 import configureStore from "./store";
 
-import App from "./containers/App";
+import Board from "./containers/Board";
 
 const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Board />
   </Provider>,
   document.getElementById("app")
 );
