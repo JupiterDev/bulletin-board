@@ -2,17 +2,23 @@ import React from "react";
 
 import "./product.sass";
 
-const Product = () => {
+const Product = ({ item }) => {
+  const price = item.price
+    ? item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+    : "Цена не указана";
+
   return (
-    <section>
-      <h4 className="green red">Заголовок объявления</h4>
+    <section className="product">
       <img
-        src="https://loremflickr.com/cache/resized/65535_32694223137_804c67ec90_z_400_400_nofilter.jpg"
-        alt="#"
+        src={`https:${item.pictures[0]}`}
+        alt="picture"
+        className="product__picture"
       />
-      <span>1000$</span>
-      <span>Саша Алексеев</span>
-      <span>12</span>
+      <span>{item.pictures.length}</span>
+      <h4 className="green red">{item.title}</h4>
+      <div>{price}</div>
+      <span>{item.seller.name}</span>
+      <span>{item.seller.rating}</span>
     </section>
   );
 };

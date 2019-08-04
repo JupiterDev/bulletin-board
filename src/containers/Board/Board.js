@@ -11,6 +11,14 @@ import SortPanel from "../SortPanel";
 import ProductList from "../ProductList";
 
 class Board extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.boardActions.fetchData();
+  }
+
   render() {
     return (
       <main className="main">
@@ -18,7 +26,10 @@ class Board extends Component {
           <FilterForm />
           <article>
             <SortPanel />
-            <ProductList />
+            <ProductList
+              products={this.props.products}
+              sellers={this.props.sellers}
+            />
           </article>
         </div>
       </main>
@@ -28,7 +39,10 @@ class Board extends Component {
 
 function mapStateToProps(state) {
   return {
-    boardState: state.boardReducer
+    products: state.boardReducer.products,
+    sellers: state.boardReducer.sellers,
+    loading: state.boardReducer.loading,
+    error: state.boardReducer.error
   };
 }
 
