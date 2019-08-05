@@ -1,7 +1,8 @@
 import {
   FETCH_DATA_BEGIN,
   FETCH_DATA_SUCCESS,
-  FETCH_DATA_FAILURE
+  FETCH_DATA_FAILURE,
+  FILTER_DATA
 } from "../actions/constants";
 
 const initialState = {
@@ -12,6 +13,17 @@ const initialState = {
 };
 
 export default function boardReducer(state = initialState, action) {
+  const filterData = (filterParams, state) => {
+    let filterProducts = [...state.products];
+    if (filterParams.category) {
+      filterProducts.filter(product => {
+        product.category === filterParams.category;
+      });
+    }
+
+    return filterProducts;
+  };
+
   switch (action.type) {
     case FETCH_DATA_BEGIN:
       return {
@@ -33,6 +45,13 @@ export default function boardReducer(state = initialState, action) {
         error: action.payload.error,
         products: [],
         sellers: []
+      };
+    case FILTER_DATA:
+      console.log("action.payload");
+      console.log(action.payload);
+      return {
+        ...state,
+        products: filterData(action.payload, state)
       };
     default:
       return state;

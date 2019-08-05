@@ -20,10 +20,11 @@ class Board extends Component {
   }
 
   render() {
+    const { boardActions } = this.props;
     return (
       <main className="main">
         <div className="container">
-          <FilterForm />
+          <FilterForm filterData={boardActions.filterData} />
           <article>
             <SortPanel />
             <ProductList

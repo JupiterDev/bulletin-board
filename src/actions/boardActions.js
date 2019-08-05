@@ -1,7 +1,8 @@
 import {
   FETCH_DATA_BEGIN,
   FETCH_DATA_SUCCESS,
-  FETCH_DATA_FAILURE
+  FETCH_DATA_FAILURE,
+  FILTER_DATA
 } from "./constants";
 
 import links from "../api.config.js";
@@ -42,3 +43,10 @@ const fetchDataFailure = error => ({
   type: FETCH_DATA_FAILURE,
   payload: { error }
 });
+
+export function filterData(filterParam) {
+  return {
+    type: FILTER_DATA,
+    payload: filterParam
+  };
+}

@@ -10,7 +10,6 @@ class ProductList extends Component {
   }
 
   render() {
-    this.getPics();
     return (
       <div className="product-list">
         {this.props.products.map(item => {
