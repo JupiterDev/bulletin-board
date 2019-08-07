@@ -9,7 +9,7 @@ class FilterForm extends Component {
       category: "",
       priceFrom: "",
       priceTo: "",
-      favorites: ""
+      favorites: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -47,11 +47,13 @@ class FilterForm extends Component {
         });
         break;
       case "favorites":
-        this.setState({
-          ...this.state,
-          favorites: checked
-        });
-        filterData(this.state);
+        this.setState(
+          {
+            ...this.state,
+            favorites: checked
+          },
+          () => filterData(this.state)
+        );
         break;
 
       default:
@@ -60,7 +62,8 @@ class FilterForm extends Component {
   }
 
   handleSubmit(event) {
-    console.log(event);
+    const { filterData } = this.props;
+    filterData(this.state);
     event.preventDefault();
   }
 
@@ -71,7 +74,9 @@ class FilterForm extends Component {
           <div>
             <span>Категории</span>
             <select name="category" onChange={this.handleChange}>
-              <option value="empty" default hidden />
+              <option value="default" default>
+                Любая категория
+              </option>
               <option value="immovable">Недвижимость</option>
               <option value="cameras">Фотоаппараты</option>
               <option value="auto">Автомобили</option>
@@ -85,14 +90,10 @@ class FilterForm extends Component {
               <input
                 type="text"
                 name="priceFrom"
-                onChange={this.handlePriceChange}
+                onChange={this.handleChange}
               />
               <span>до</span>
-              <input
-                type="text"
-                name="priceTo"
-                onChange={this.handlePriceChange}
-              />
+              <input type="text" name="priceTo" onChange={this.handleChange} />
             </div>
           </div>
           <div>

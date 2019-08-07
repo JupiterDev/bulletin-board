@@ -2,7 +2,8 @@ import {
   FETCH_DATA_BEGIN,
   FETCH_DATA_SUCCESS,
   FETCH_DATA_FAILURE,
-  FILTER_DATA
+  FILTER_DATA,
+  SORT_DATA
 } from "./constants";
 
 import links from "../api.config.js";
@@ -48,5 +49,12 @@ export function filterData(filterParam) {
   return {
     type: FILTER_DATA,
     payload: filterParam
+  };
+}
+
+export function sortData(sortParam) {
+  return {
+    type: SORT_DATA,
+    payload: sortParam
   };
 }

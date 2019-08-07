@@ -26,10 +26,13 @@ class Board extends Component {
         <div className="container">
           <FilterForm filterData={boardActions.filterData} />
           <article>
-            <SortPanel />
+            <SortPanel sortData={boardActions.sortData} />
             <ProductList
               products={this.props.products}
+              filteredProducts={this.props.filteredProducts}
+              sortedProducts={this.props.sortedProducts}
               sellers={this.props.sellers}
+              filterError={this.props.filterError}
             />
           </article>
         </div>
@@ -41,9 +44,13 @@ class Board extends Component {
 function mapStateToProps(state) {
   return {
     products: state.boardReducer.products,
+    filteredProducts: state.boardReducer.filteredProducts,
+    sortedProducts: state.boardReducer.sortedProducts,
+    sortProductsBy: state.boardReducer.sortProductsBy,
     sellers: state.boardReducer.sellers,
     loading: state.boardReducer.loading,
-    error: state.boardReducer.error
+    requestError: state.boardReducer.requestError,
+    filterError: state.boardReducer.filterError
   };
 }
 
