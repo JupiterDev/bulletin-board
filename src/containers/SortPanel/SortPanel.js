@@ -16,8 +16,12 @@ class SortPanel extends Component {
   render() {
     return (
       <aside className="sort">
-        <select name="sorting" onChange={this.handleChange}>
-          Сортировка по
+        <div>Сортировка по</div>
+        <select
+          className="sort__selector"
+          name="sorting"
+          onChange={this.handleChange}
+        >
           <option value="default" default>
             умолчанию
           </option>

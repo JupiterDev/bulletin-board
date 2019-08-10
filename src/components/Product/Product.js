@@ -16,8 +16,9 @@ class Product extends Component {
     const { item } = this.props;
 
     // Разделяем пробелами цену на группы, по 3 знака в каждой.
+    // Если цена не указана, выводим сообщение.
     const price = item.price
-      ? item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+      ? `${item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₽`
       : "Цена не указана";
 
     return (
@@ -27,15 +28,26 @@ class Product extends Component {
           alt="picture"
           className="product__picture"
         />
-        <span>{item.pictures.length}</span>
-        <h4 className="green red">{item.title}</h4>
-        <div>{price}</div>
-        <span>{item.seller.name}</span>
-        <span>{item.seller.rating}</span>
-        <button onClick={this.handleAddToFavorites}>
-          Добавить в избранное
-        </button>
-        <i className={`${item.favorite ? "fas" : "far"} fa-star`} />
+        <div className="product__info">
+          <div className="product__title">{item.title}</div>
+          <div className="product__price">{`${price}`}</div>
+          <div className="product__author">
+            {`${item.seller.name} (рейтинг: ${item.seller.rating})`}
+          </div>
+        </div>
+        <div className="product__buttons">
+          {item.pictures.length > 0 ? (
+            <div className="product__pic-count">
+              +{item.pictures.length - 1} <i className="fas fa-images" />
+            </div>
+          ) : null}
+          <i
+            className={`${
+              item.favorite ? "fas" : "far"
+            } fa-heart product__favorite`}
+            onClick={this.handleAddToFavorites}
+          />
+        </div>
       </section>
     );
   }

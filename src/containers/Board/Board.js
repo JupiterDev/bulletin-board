@@ -32,7 +32,8 @@ class Board extends Component {
               filteredProducts={this.props.filteredProducts}
               sortedProducts={this.props.sortedProducts}
               sellers={this.props.sellers}
-              filterError={this.props.filterError}
+              // filterError={this.props.filterError}
+              lastUpdate={this.props.lastUpdate}
             />
           </article>
         </div>
@@ -46,11 +47,11 @@ function mapStateToProps(state) {
     products: state.boardReducer.products,
     filteredProducts: state.boardReducer.filteredProducts,
     sortedProducts: state.boardReducer.sortedProducts,
-    sortProductsBy: state.boardReducer.sortProductsBy,
+    // sortProductsBy: state.boardReducer.sortProductsBy,
     sellers: state.boardReducer.sellers,
-    loading: state.boardReducer.loading,
-    requestError: state.boardReducer.requestError,
-    filterError: state.boardReducer.filterError
+    // loading: state.boardReducer.loading,
+    // requestError: state.boardReducer.requestError,
+    lastUpdate: state.boardReducer.lastUpdate
   };
 }
 

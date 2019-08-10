@@ -72,7 +72,7 @@ class FilterForm extends Component {
       <aside>
         <form name="filter" onSubmit={this.handleSubmit}>
           <div>
-            <span>Категории</span>
+            <div className="filter__category">Категории</div>
             <select name="category" onChange={this.handleChange}>
               <option value="default" default>
                 Любая категория
@@ -83,26 +83,29 @@ class FilterForm extends Component {
               <option value="laptops">Ноутбуки</option>
             </select>
           </div>
-          <div>
-            <span>Сортировка по цене</span>
-            <div>
+          <div className="filter__favorites">
+            <span>Только избранное</span>
+            <input
+              type="checkbox"
+              name="favorites"
+              onChange={this.handleChange}
+            />
+          </div>
+          <hr />
+          <div className="filter__price">
+            <div>Фильтрация по цене</div>
+            <div className="priceFrom">
               <span>от</span>
               <input
                 type="text"
                 name="priceFrom"
                 onChange={this.handleChange}
               />
+            </div>
+            <div className="priceTo">
               <span>до</span>
               <input type="text" name="priceTo" onChange={this.handleChange} />
             </div>
-          </div>
-          <div>
-            <span>Сортировка по избранным</span>
-            <input
-              type="checkbox"
-              name="favorites"
-              onChange={this.handleChange}
-            />
           </div>
           <input type="submit" value="Отправить" />
         </form>

@@ -14,7 +14,7 @@ class ProductList extends Component {
     this.addToFavorite = this.addToFavorite.bind(this);
   }
 
-  // При обновлении страницы заносим id-шники избранных товаров в state.favoritesIds.
+  // Во время монтирования страницы заносим id-шники избранных продуктов из localStorage в state.favoritesIds.
   componentDidMount() {
     this.setState({
       favoritesIds: [...localStorage.getItem("favoritesIds").split(",")]
@@ -51,52 +51,75 @@ class ProductList extends Component {
   }
 
   renderTarget() {
-    const { products, filteredProducts, sortedProducts, sellers } = this.props;
+    const {
+      products,
+      filteredProducts,
+      sortedProducts,
+      sellers,
+      lastUpdate
+    } = this.props;
 
-    if (sortedProducts.length != 0) {
-      return sortedProducts.map(item => {
-        const productSeller = sellers.find(
-          seller => item.relationships.seller == seller.id
-        );
-        item.seller = productSeller;
-        return (
-          <Product
-            key={item.id}
-            item={item}
-            addToFavorite={this.addToFavorite}
-          />
-        );
-      });
+    switch (lastUpdate) {
+      // Если последнее действие - ЗАПРОС ДАННЫХ, то перебираем и выводим продукты из products.
+      case "fetch":
+        return products.map(item => {
+          const productSeller = sellers.find(
+            seller => item.relationships.seller == seller.id
+          );
+          item.seller = productSeller;
+          this.state.favoritesIds.indexOf(item.id) !== -1
+            ? (item.favorite = true)
+            : (item.favorite = false);
+          return (
+            <Product
+              key={item.id}
+              item={item}
+              addToFavorite={this.addToFavorite}
+            />
+          );
+        });
+
+      // Если последнее действие - ФИЛЬТРАЦИЯ, то перебираем и выводим продукты из filteredProducts.
+      case "filter":
+        return filteredProducts.map(item => {
+          const productSeller = sellers.find(
+            seller => item.relationships.seller == seller.id
+          );
+          item.seller = productSeller;
+          this.state.favoritesIds.indexOf(item.id) !== -1
+            ? (item.favorite = true)
+            : (item.favorite = false);
+          return (
+            <Product
+              key={item.id}
+              item={item}
+              addToFavorite={this.addToFavorite}
+            />
+          );
+        });
+
+      // если последнее действие - СОРТИРОВКА, то перебираем и выводим продукты из sortedProducts
+      case "sort":
+        return sortedProducts.map(item => {
+          const productSeller = sellers.find(
+            seller => item.relationships.seller == seller.id
+          );
+          item.seller = productSeller;
+          this.state.favoritesIds.indexOf(item.id) !== -1
+            ? (item.favorite = true)
+            : (item.favorite = false);
+          return (
+            <Product
+              key={item.id}
+              item={item}
+              addToFavorite={this.addToFavorite}
+            />
+          );
+        });
+
+      default:
+        break;
     }
-
-    if (filteredProducts.length != 0 && sortedProducts.length == 0) {
-      return filteredProducts.map(item => {
-        const productSeller = sellers.find(
-          seller => item.relationships.seller == seller.id
-        );
-        item.seller = productSeller;
-        return (
-          <Product
-            key={item.id}
-            item={item}
-            addToFavorite={this.addToFavorite}
-          />
-        );
-      });
-    }
-
-    return products.map(item => {
-      const productSeller = sellers.find(
-        seller => item.relationships.seller == seller.id
-      );
-      item.seller = productSeller;
-      this.state.favoritesIds.indexOf(item.id) !== -1
-        ? (item.favorite = true)
-        : (item.favorite = false);
-      return (
-        <Product key={item.id} item={item} addToFavorite={this.addToFavorite} />
-      );
-    });
   }
 
   render() {
