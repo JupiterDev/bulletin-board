@@ -22,7 +22,7 @@ class ProductList extends Component {
   }
 
   // Из Product.js возвращается id продукта на котором нажали кнопку "избранное". Если в state.favoritesIds такого id нет, то он добавляется. Если есть - удаляется.
-  //  Затем обновленный массив state.favoritesIds переписывается в localStorage.
+  // Затем обновленный массив state.favoritesIds переписывается в localStorage.
   addToFavorite(id) {
     if (this.state.favoritesIds.indexOf(id) == -1) {
       this.setState(
@@ -98,7 +98,7 @@ class ProductList extends Component {
           );
         });
 
-      // если последнее действие - СОРТИРОВКА, то перебираем и выводим продукты из sortedProducts
+      // Если последнее действие - СОРТИРОВКА, то перебираем и выводим продукты из sortedProducts
       case "sort":
         return sortedProducts.map(item => {
           const productSeller = sellers.find(
@@ -123,8 +123,13 @@ class ProductList extends Component {
   }
 
   render() {
-    return this.props.filterError ? (
-      <div>По заданным параметрам фильтрации ничего не найдено</div>
+    return (this.props.lastUpdate === "filter" &&
+      this.props.filteredProducts.length == 0) ||
+      (this.props.lastUpdate === "sort" &&
+        this.props.sortedProducts.length == 0) ? (
+      <div className="product-list">
+        <div>По заданным параметрам фильтрации ничего не найдено</div>
+      </div>
     ) : (
       <div className="product-list">{this.renderTarget()}</div>
     );

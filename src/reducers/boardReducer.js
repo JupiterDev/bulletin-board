@@ -20,14 +20,10 @@ const initialState = {
 export default function boardReducer(state = initialState, action) {
   const makeChange = (changeType, changeParams) => {
     const filterData = (filterParams, state) => {
-      console.log("FILTERPARAM");
-      console.log(filterParams);
-      console.log("STATE");
-      console.log(state);
       let products = [...state.products];
 
       const filterFunc = () => {
-        // фильтруем по КАТЕГОРИЯМ //
+        // Фильтруем по КАТЕГОРИЯМ
         if (filterParams.category && filterParams.category != "default") {
           const resultProducts = products.filter(product => {
             return product.category === filterParams.category;
@@ -35,7 +31,7 @@ export default function boardReducer(state = initialState, action) {
           products = resultProducts;
         }
 
-        // фильтруем по ЦЕНЕ //
+        // Фильтруем по ЦЕНЕ
         if (filterParams.priceFrom && filterParams.priceTo) {
           const resultProducts = products.filter(product => {
             if (product.price) {
@@ -62,7 +58,7 @@ export default function boardReducer(state = initialState, action) {
           products = resultProducts;
         }
 
-        // фильтруем по ИЗБРАННОМУ
+        // Фильтруем по ИЗБРАННОМУ
         if (filterParams.favorites) {
           const favoritesProducts = localStorage
             .getItem("favoritesIds")
@@ -82,24 +78,15 @@ export default function boardReducer(state = initialState, action) {
         return filterFunc();
       } else {
         const newState = {
-          filteredProducts: filterFunc(),
-          lastUpdate: state.lastUpdate
-          // , products: state.products
+          ...state,
+          filteredProducts: filterFunc()
         };
-        console.log("SORTED BY");
-        console.log(state.sortedBy);
-        console.log("newState");
-        console.log(newState);
         return sortData(state.sortedBy, newState);
       }
     };
 
     const sortData = (sortParam, state) => {
-      // console.log("сортируем");
-
       const sortByParam = param => {
-        console.log("PARAM");
-        console.log(param);
         const sortedProducts = [...param].sort((a, b) => {
           // при сортировке ПО ВОЗРАСТАНИЮ товары без цены показываются ПЕРВЫМИ
           // при сортировке ПО УБЫВАНИЮ товары без цены показываются ПОСЛЕДНИМИ
@@ -125,37 +112,10 @@ export default function boardReducer(state = initialState, action) {
         return sortedProducts;
       };
 
-      // if (state.filteredProducts.length > 0 || state.filteredProducts.length == 0 && state.lastUpdate === "filter" ) {
-      if (state.lastUpdate === "filter") {
-        console.log("FILTER PRODUCTS");
-        console.log(state.filteredProducts);
+      if (state.lastUpdate != "fetch" && state.filteredProducts.length > 0) {
         return sortByParam(state.filteredProducts);
       }
-      console.log("SORT PRODUCTS");
-      console.log(state.products);
       return sortByParam(state.products);
-
-      // let sortedProducts = [...state.products].sort((a, b) => {
-      //   if (sortParam == "priceHightToLow") {
-      //     return b.price - a.price;
-      //   }
-      //   if (sortParam == "priceLowToHight") {
-      //     return a.price - b.price;
-      //   }
-      //   if (sortParam == "rating") {
-      //     return b.seller.rating - a.seller.rating;
-      //   }
-      //   if (sortParam == "default") {
-      //     return 0;
-      //   }
-      // });
-      // console.log("SORTedProducts");
-      // console.log(sortedProducts);
-      // console.log("sortParam");
-      // console.log(sortParam);
-      // console.log("Товары после отсортировки");
-      // console.log(sortedProducts);
-      // return sortedProducts;
     };
 
     if (changeType === "filter") {
@@ -188,17 +148,12 @@ export default function boardReducer(state = initialState, action) {
         sellers: []
       };
     case FILTER_DATA:
-      // console.log("action.payload");
-      // console.log(action.payload);
       return {
         ...state,
         filteredProducts: makeChange("filter", action.payload),
         lastUpdate: "filter"
       };
     case SORT_DATA:
-      // console.log("action.payload");
-      // console.log(action.payload);
-
       switch (action.payload) {
         case "priceHightToLow":
           return {
@@ -230,12 +185,6 @@ export default function boardReducer(state = initialState, action) {
           };
       }
 
-    // return {
-    //   ...state,
-    //   filteredProducts: filterData(action.payload, state),
-    //   filterError: filterData(action.payload, state).length > 0 ? false : true
-    // };
-    // return state;
     default:
       return state;
   }
