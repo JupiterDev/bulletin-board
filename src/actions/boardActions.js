@@ -12,35 +12,39 @@ export function fetchData() {
   return dispatch => {
     dispatch(fetchDataBegin());
     return Promise.all([fetch(links.products), fetch(links.sellers)])
-      .then(handleErrors)
+      .then(res => handleErrors(res))
       .then(res => Promise.all(res.map(r => r.json())))
       .then(res => {
         res = { products: res[0].data, sellers: res[1].data };
         return dispatch(fetchDataSuccess(res));
       })
-      .catch(error => dispatch(fetchDataFailure(error)));
+      .catch(error => {
+        dispatch(fetchDataFailure(error));
+      });
   };
 }
 
-function handleErrors(response) {
-  if (!response[0].ok) {
-    throw Error(response.statusText);
+export function handleErrors(response) {
+  if (!response[0].ok && !response[1].ok) {
+    throw Error(`Ошибка получения списка товаров и продавцов с сервера.`);
+  } else if (!response[0].ok) {
+    throw Error(`Ошибка получения списка товаров с сервера.`);
   } else if (!response[1].ok) {
-    throw Error(response.statusText);
+    throw Error(`Ошибка получения списка продавцов с сервера.`);
   }
   return response;
 }
 
-const fetchDataBegin = () => ({
+export const fetchDataBegin = () => ({
   type: FETCH_DATA_BEGIN
 });
 
-const fetchDataSuccess = result => ({
+export const fetchDataSuccess = result => ({
   type: FETCH_DATA_SUCCESS,
   payload: result
 });
 
-const fetchDataFailure = error => ({
+export const fetchDataFailure = error => ({
   type: FETCH_DATA_FAILURE,
   payload: { error }
 });

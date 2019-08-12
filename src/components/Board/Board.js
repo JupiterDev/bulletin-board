@@ -34,6 +34,7 @@ class Board extends Component {
               sellers={this.props.sellers}
               // filterError={this.props.filterError}
               lastUpdate={this.props.lastUpdate}
+              requestError={this.props.requestError}
             />
           </article>
         </div>
@@ -50,7 +51,7 @@ function mapStateToProps(state) {
     // sortProductsBy: state.boardReducer.sortProductsBy,
     sellers: state.boardReducer.sellers,
     // loading: state.boardReducer.loading,
-    // requestError: state.boardReducer.requestError,
+    requestError: state.boardReducer.requestError,
     lastUpdate: state.boardReducer.lastUpdate
   };
 }

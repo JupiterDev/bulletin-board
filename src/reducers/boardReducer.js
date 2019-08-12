@@ -6,7 +6,7 @@ import {
   SORT_DATA
 } from "../actions/constants";
 
-const initialState = {
+export const initialState = {
   products: [],
   filteredProducts: [], // товары после фильтрации
   sortedProducts: [], // товары после сортировки
@@ -14,7 +14,7 @@ const initialState = {
   lastUpdate: "fetch", // последнее действие (товары после фетча/фильтрации/сортировки)
   sellers: [],
   loading: false,
-  requestError: false
+  requestError: false // выдает сообщение и код ошибки
 };
 
 export default function boardReducer(state = initialState, action) {
@@ -70,7 +70,6 @@ export default function boardReducer(state = initialState, action) {
           });
           products = resultProducts;
         }
-
         return products;
       };
 
@@ -114,6 +113,11 @@ export default function boardReducer(state = initialState, action) {
 
       if (state.lastUpdate != "fetch" && state.filteredProducts.length > 0) {
         return sortByParam(state.filteredProducts);
+      } else if (
+        (state.lastUpdate === "filter" || state.lastUpdate === "sort") &&
+        state.filteredProducts.length == 0
+      ) {
+        return sortByParam(state.filteredProducts);
       }
       return sortByParam(state.products);
     };
@@ -129,8 +133,7 @@ export default function boardReducer(state = initialState, action) {
     case FETCH_DATA_BEGIN:
       return {
         ...state,
-        loading: true,
-        requestError: null
+        loading: true
       };
     case FETCH_DATA_SUCCESS:
       return {
